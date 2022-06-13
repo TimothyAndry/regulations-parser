@@ -24,11 +24,13 @@ def last_versions(cfr_title, cfr_part):
         have_annual_edition[pub_date.year] = version.identifier
     for year in sorted(have_annual_edition):
         if annual.find_volume(year, cfr_title, cfr_part):
-            yield LastVersionInYear(have_annual_edition[year], year)
+            yield LastVersionInYear(have_annual_edition[year], year)     
         else:
+            if cfr_part == 478:
+                logger.warning("This is part %s and year %s", cfr_part, year)
+                yield LastVersionInYear(have_annual_edition[year], 2021)
             logger.warning("%s edition for %s CFR %s not published yet",
                            year, cfr_title, cfr_part)
-
 
 def process_if_needed(cfr_title, cfr_part, last_version_list):
     """Calculate dependencies between input and output files for these annual
