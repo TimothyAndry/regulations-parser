@@ -18,21 +18,22 @@ logger = logging.getLogger(__name__)
 
 def get_parent_label(node):
     """ Given a node, get the label of it's parent. """
-    if node.node_type == Node.SUBPART:
-        return node.label[0]
-    elif node.node_type == Node.INTERP:
-        marker_position = node.label.index(Node.INTERP_MARK)
-        interpreting = node.label[:marker_position]
-        comment_pars = node.label[marker_position + 1:]
-        if comment_pars:                # 111-3-a-Interp-4-i
-            return '-'.join(node.label[:-1])
-        elif len(interpreting) > 1:     # 111-3-a-Interp
-            return '-'.join(interpreting[:-1] + [Node.INTERP_MARK])
-        else:                           # 111-Interp
+    if node:
+        if node.node_type == Node.SUBPART:
             return node.label[0]
-    else:
-        parent_label = node.label[:-1]
-        return '-'.join(parent_label)
+        elif node.node_type == Node.INTERP:
+            marker_position = node.label.index(Node.INTERP_MARK)
+            interpreting = node.label[:marker_position]
+            comment_pars = node.label[marker_position + 1:]
+            if comment_pars:                # 111-3-a-Interp-4-i
+                return '-'.join(node.label[:-1])
+            elif len(interpreting) > 1:     # 111-3-a-Interp
+                return '-'.join(interpreting[:-1] + [Node.INTERP_MARK])
+            else:                           # 111-Interp
+                return node.label[0]
+        else:
+            parent_label = node.label[:-1]
+            return '-'.join(parent_label)
 
 
 _component_re = re.compile('[a-z]+|[A-Z]+|[0-9]+')
@@ -89,14 +90,15 @@ def overwrite_marker(origin, new_label):
     """ The node passed in has a label, but we're going to give it a
     new one (new_label). This is necessary during node moves.  """
     marker = marker_of(origin)
-    if '(' in marker:
-        origin.text = origin.text.replace(marker, '({0})'.format(new_label), 1)
-    elif marker:
-        origin.text = origin.text.replace(marker, '{0}.'.format(new_label), 1)
-    else:
-        logger.warning("Cannot replace marker in %s", origin.text)
+    if marker:
+        if '(' in marker:
+            origin.text = origin.text.replace(marker, '({0})'.format(new_label), 1)
+        elif marker:
+            origin.text = origin.text.replace(marker, '{0}.'.format(new_label), 1)
+        else:
+            logger.warning("Cannot replace marker in %s", origin.text)
 
-    return origin
+        return origin
 
 
 def is_reserved_node(node):
@@ -139,7 +141,8 @@ class RegulationTree(object):
             parent_label_id = get_parent_label(node)
             parent = find(self.tree, parent_label_id)
         if not parent:
-            logger.error("Could not find parent of %s. Misparsed amendment?",
+            if node:
+                logger.error("Could not find parent of %s. Misparsed amendment?",
                          node.label_id())
         return parent
 
@@ -200,8 +203,9 @@ class RegulationTree(object):
         tree. """
 
         parent = self.get_parent(node)
-        other_children = [c for c in parent.children if c.label != node.label]
-        parent.children = other_children
+        if parent:
+            other_children = [c for c in parent.children if c.label != node.label]
+            parent.children = other_children
 
     def delete(self, label_id):
         """ Delete the node with label_id from the tree. """
@@ -229,8 +233,9 @@ class RegulationTree(object):
         self.delete_from_parent(origin)
 
         origin = overwrite_marker(origin, destination[-1])
-        origin.label = destination
-        self.add_node(origin)
+        if origin:
+            origin.label = destination
+            self.add_node(origin)
 
     def replace_node_and_subtree(self, node):
         """ Replace an existing node in the tree with node. """

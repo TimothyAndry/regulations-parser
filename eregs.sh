@@ -7,4 +7,4 @@ touch local_settings.py
 # --rm removes the container after execution
 # -it makes the container interactive (particularly useful with --debug)
 # -v mounts volumes for cache, output, and copies in the local settings
-docker run --rm -it -v eregs-cache:/app/cache -v $PWD/output:/app/output -v $PWD/local_settings
+docker run --rm -it -v eregs-cache:/app/cache -v $PWD/output:/app/output -v $PWD/local_settings.py:/app/code/local_settings.py eregs/parser $@

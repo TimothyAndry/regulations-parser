@@ -26,9 +26,10 @@ def last_versions(cfr_title, cfr_part):
         if annual.find_volume(year, cfr_title, cfr_part):
             yield LastVersionInYear(have_annual_edition[year], year)     
         else:
-            if cfr_part == 478:
+            if cfr_part == 479 or cfr_part == 478:
                 logger.warning("This is part %s and year %s", cfr_part, year)
-                yield LastVersionInYear(have_annual_edition[year], 2021)
+                logger.warning("These are the years of annual editions ", have_annual_edition)
+                yield LastVersionInYear(have_annual_edition[year], 2023)
             logger.warning("%s edition for %s CFR %s not published yet",
                            year, cfr_title, cfr_part)
 

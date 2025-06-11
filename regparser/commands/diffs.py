@@ -33,5 +33,5 @@ def diffs(cfr_title, cfr_part):
                 trees[lhs_id] = (tree_dir / lhs_id).read()
             if rhs_id not in trees:
                 trees[rhs_id] = (tree_dir / rhs_id).read()
-
-            path.write(dict(changes_between(trees[lhs_id], trees[rhs_id])))
+            diff_changes = dict(changes_between(trees[lhs_id], trees[rhs_id]))
+            path.write(diff_changes)

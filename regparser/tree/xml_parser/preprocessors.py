@@ -14,6 +14,8 @@ import six
 from lxml import etree
 from six.moves.html_parser import HTMLParser
 
+import html
+
 from regparser.grammar.tokens import uncertain_label
 from regparser.notice.amdparser import parse_amdpar
 from regparser.tree.xml_parser.tree_utils import (get_node_text,
@@ -31,7 +33,7 @@ def replace_html_entities(xml_bin_str):
     """XML does not contain entity references for many HTML entities, yet the
     Federal Register XML sometimes contains the HTML entities. Replace them
     here, lest we throw off XML parsing"""
-    parser = HTMLParser()
+    parser = html
     match = HTML_RE.search(xml_bin_str)
     while match:
         match_bin = match.group(0)
