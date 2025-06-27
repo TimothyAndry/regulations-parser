@@ -222,10 +222,6 @@ CUSTOM_CITATIONS = {
     "Form 7110.15": "https://www.atf.gov/resource-center/docs/form/forensic-firearm-training-request-non-atf-employees-atf-form-711015",
     "Form 8620. 42": "https://www.atf.gov/resource-center/docs/form/police-check-inquiry-atf-form-862042",
     "Form 8620.65": "https://www.atf.gov/resource-center/docs/form/request-atf-background-investigation-information-atf-form-862065",
-    "301.6091": "https://www.govinfo.gov/content/pkg/CFR-2022-title26-vol20/pdf/CFR-2022-title26-vol20-sec301-6091-1.pdf",
-    "301.6091-1": "https://www.govinfo.gov/content/pkg/CFR-2022-title26-vol20/pdf/CFR-2022-title26-vol20-sec301-6091-1.pdf",
-    "301.6091-1(b)": "https://www.govinfo.gov/content/pkg/CFR-2022-title26-vol20/pdf/CFR-2022-title26-vol20-sec301-6091-1.pdf",
-    "301.6091-1(a)": "https://www.govinfo.gov/content/pkg/CFR-2024-title26-vol20/pdf/CFR-2024-title26-vol20-sec301-6091-1.pdf",
 }
 
 # Regulations.gov settings. The demo key is rate limited by IP; sign up for
